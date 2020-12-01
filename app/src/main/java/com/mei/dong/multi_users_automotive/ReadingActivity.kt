@@ -11,18 +11,22 @@ class ReadingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reading)
+        Log.d("Mei", "ReadingActivity set to value view")
         readFile()
     }
 
     private fun readFile() {
         val view = findViewById<TextView>(R.id.textView)
+        //val value = readFileAsTextUsingInputStream("config.txt")
         val value = readFromFile(applicationContext)
+        Log.d("Mei ReadingActivity set to value view", value)
         view.setText(value)
     }
 
     private fun readFromFile(context: Context): String? {
         var ret = ""
         try {
+            Log.d("Mei", " readFromFile")
             val inputStream: InputStream = context.openFileInput("config.txt")
             if (inputStream != null) {
                 val inputStreamReader = InputStreamReader(inputStream)
@@ -34,14 +38,15 @@ class ReadingActivity : AppCompatActivity() {
                 }
                 inputStream.close()
                 ret = stringBuilder.toString()
+                Log.d("Mei", " readFromFile $ret")
             }
         } catch (e: FileNotFoundException) {
-            Log.e("login activity", "File not found: " + e.toString())
+            Log.e("ReadingActivity", "File not found: " + e.toString())
         } catch (e: IOException) {
-            Log.e("login activity", "Can not read file: " + e.toString())
+            Log.e("ReadingActivity", "Can not read file: " + e.toString())
         }
         return ret
     }
-//    private fun readFileAsTextUsingInputStream(fileName: String)
-//            = File(cacheDir, "myfile.txt").inputStream().readBytes().toString(Charsets.UTF_8)
+    private fun readFileAsTextUsingInputStream(fileName: String)
+            = File("data/data/com.mei.dong.multi_users_automotive/files", fileName).inputStream().readBytes().toString(Charsets.UTF_8)
 }
